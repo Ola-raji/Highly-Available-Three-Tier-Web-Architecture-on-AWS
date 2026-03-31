@@ -4,9 +4,9 @@
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 ![Architecture](https://img.shields.io/badge/Architecture-Three--Tier%20HA-blue)
 
-A hands-on cloud infrastructure project demonstrating a production-grade, highly available three-tier architecture on AWS — built from scratch using the AWS Management Console across two Availability Zones in us-east-1.
+A hands-on cloud infrastructure project demonstrating a production-grade, highly available, reliable, scalable and fault-tolerant three-tier architecture on AWS, built from scratch using the AWS Management Console across two Availability Zones in us-east-1.
 
-This project was built to develop and demonstrate practical understanding of core AWS services, network design, security layering, and failure recovery patterns. Every component was manually configured to reinforce how each piece fits together — and then intentionally broken to prove the high availability actually works.
+This project was built to develop and demonstrate practical understanding of core AWS services, network design, security layering, and failure recovery patterns. Every component was manually configured to reinforce how each piece fits together, and then intentionally broken to prove the high availability actually works.
 
 ---
 
@@ -105,7 +105,7 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 See the `/docs` folder for detailed notes on each phase, and `/architecture/DESIGN-DECISIONS.md` for the reasoning behind key configuration choices.
 
-> **Note:** No Infrastructure-as-Code tooling was used in this iteration. A CloudFormation or Terraform version is planned as a future improvement (see `/iac`).
+> **Note:** No Infrastructure-as-Code tooling was used in this iteration. A CloudFormation or Terraform version is planned as a future improvement. 
 
 ---
 
@@ -125,12 +125,7 @@ The `stress` tool was run simultaneously on both instances to push fleet average
 ---
 
 ## Live Access
-
-> **Note:** The infrastructure has been torn down after project completion to avoid ongoing costs. The ALB endpoint below is no longer active.
-
-| Endpoint | Value |
-|---|---|
-| ALB DNS (inactive) | `http://ha-app-load-balancer-121171499.us-east-1.elb.amazonaws.com` |
+[ALB DNS](http://ha-app-load-balancer-121171499.us-east-1.elb.amazonaws.com)
 
 Screenshots demonstrating the running architecture are available in the `/screenshots` directory, organised by component.
 
