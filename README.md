@@ -85,4 +85,11 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 [Architecture Diagram](Architecture/Architecture.md)
 
 ---
-### Limitations 
+### Limitations
+This project was built within AWS Free Tier constraints and is scoped for a lab environment rather than a production deployment. As a result, a number of deliberate trade-offs were made. 
+
+Only one NAT Gateway is deployed in us-east-1a, a production setup would add a second in us-east-1b to eliminate the single point of failure for private subnet egress. 
+
+RDS runs in Single-AZ mode with 1-day backup retention; Multi-AZ is disabled to stay within free tier, though the DB subnet group already spans both AZs and can be upgraded with a single configuration change.
+
+The ALB serves HTTP only. Without a custom domain, ACM cannot issue a certificate, so HTTPS termination was not possible. Database credentials are managed manually rather than through AWS Secrets Manager, and application logs are not shipped to CloudWatch Logs, both acceptable for a lab environment but gaps that would need to be addressed before any production use.
