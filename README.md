@@ -10,7 +10,7 @@ This project was built to develop and demonstrate practical understanding of cor
 
 ---
 
-## Objectives
+### Objectives
 
 - Design and deploy a custom VPC with public and private subnet segmentation across two AZs
 - Build a secure compute layer using EC2 with no open SSH ports (SSM Session Manager only)
@@ -22,7 +22,7 @@ This project was built to develop and demonstrate practical understanding of cor
 
 ---
 
-## System Design Considerations
+### System Design Considerations
 
 **High Availability**
 Resources are distributed across two physically separate Availability Zones. The ALB, ASG, and RDS subnet group all span both AZs. No single component failure can take down the entire application â€” traffic reroutes automatically, instances self-replace via ASG, and the database has a standby path via Multi-AZ promotion. The minimum ASG capacity is set to 2 (not 1) to ensure at least one instance is always available in each AZ even during a scale-in event.
@@ -44,7 +44,7 @@ Layered security group chaining enforces least privilege at the network level â€
 
 ---
 
-## Deployment Summary
+### Deployment Summary
 
 All infrastructure was deployed manually via the AWS Management Console in us-east-1 (N. Virginia). The deployment followed this sequence:
 
@@ -60,7 +60,7 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 ---
 
-## AWS Services Used
+### AWS Services Used
 
 |Service|Role in Architecture|
 |---|---|
@@ -88,10 +88,10 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 ---
 ### Project Limitations
-This project was built within AWS Free Tier constraints and is scoped for a lab environment rather than a production deployment. As a result, a number of deliberate trade-offs were made. 
+- This project was built within AWS Free Tier constraints and is scoped for a lab environment rather than a production deployment. As a result, a number of deliberate trade-offs were made. 
 
-Only one NAT Gateway is deployed in us-east-1a, a production setup would add a second in us-east-1b to eliminate the single point of failure for private subnet egress. 
+- Only one NAT Gateway is deployed in us-east-1a, a production setup would add a second in us-east-1b to eliminate the single point of failure for private subnet egress. 
 
-RDS runs in Single-AZ mode with 1-day backup retention; Multi-AZ is disabled to stay within free tier, though the DB subnet group already spans both AZs and can be upgraded with a single configuration change.
+- RDS runs in Single-AZ mode with 1-day backup retention; Multi-AZ is disabled to stay within free tier, though the DB subnet group already spans both AZs and can be upgraded with a single configuration change.
 
-The ALB serves HTTP only. Without a custom domain, ACM cannot issue a certificate, so HTTPS termination was not possible. Database credentials are managed manually rather than through AWS Secrets Manager, and application logs are not shipped to CloudWatch Logs, both acceptable for a lab environment but gaps that would need to be addressed before any production use.
+- The ALB serves HTTP only. Without a custom domain, ACM cannot issue a certificate, so HTTPS termination was not possible. Database credentials are managed manually rather than through AWS Secrets Manager, and application logs are not shipped to CloudWatch Logs, both acceptable for a lab environment but gaps that would need to be addressed before any production use.
