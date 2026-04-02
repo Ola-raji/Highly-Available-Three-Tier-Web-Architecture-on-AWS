@@ -1,11 +1,4 @@
-# verify-nginx.sh — Post-Launch Nginx Verification
-
-Runs a set of checks on a freshly launched EC2 instance to confirm that Nginx installed correctly, the custom AZ page is being served, outbound internet works through the NAT Gateway, and instance metadata is being fetched correctly via IMDSv2. Used after launch to validate the User Data script ran successfully before registering the instance with the ALB.
-
-**Where to run:** On each EC2 instance via SSM Session Manager, as root.  
-**When to run:** After the instance reaches Running state and before confirming it healthy in the target group.
-
----
+## verify-nginx.sh — Post-Launch Nginx Verification
 
 ```bash
 #!/bin/bash
@@ -57,19 +50,3 @@ External IP (NAT Gateway): 54.x.x.x
 AZ: us-east-1a
 Instance ID: i-0xxxxxxxxxxxxxxxxx
 ```
-
----
-
-## Notes
-
-**What each check confirms:**
-
-| Check | What it proves |
-|---|---|
-| Nginx service status | User Data ran successfully and the service started |
-| Local HTTP response | Custom HTML page was written correctly with AZ and instance ID populated |
-| Outbound internet | NAT Gateway is reachable and the private route table is configured correctly |
-| Instance metadata | IMDSv2 token fetch works and metadata is accessible — confirms the Launch Template IMDSv2 setting is not blocking access |
-
-**The external IP is the NAT Gateway's Elastic IP — not the instance's IP.**  
-This is NAT in action. The instance has no public IP of its own. All outbound traffic exits through the NAT Gateway, which substitutes its own public Elastic IP as the source address. This is what allows private instances to reach the internet for package installs and API calls without being directly reachable inbound.
