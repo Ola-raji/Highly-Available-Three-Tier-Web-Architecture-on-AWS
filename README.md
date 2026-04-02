@@ -81,11 +81,13 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 ### Live Access
 [Load Balancer Preview](http://ha-app-load-balancer-121171499.us-east-1.elb.amazonaws.com)
 
+---
+
 ### Architecture Diagram
 [Architecture Diagram](Architecture/Architecture.md)
 
 ---
-### Limitations
+### Project Limitations
 This project was built within AWS Free Tier constraints and is scoped for a lab environment rather than a production deployment. As a result, a number of deliberate trade-offs were made. 
 
 Only one NAT Gateway is deployed in us-east-1a, a production setup would add a second in us-east-1b to eliminate the single point of failure for private subnet egress. 
