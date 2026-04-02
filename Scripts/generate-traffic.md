@@ -1,11 +1,4 @@
-# generate-traffic.sh — ALB Traffic Simulation
-
-Sends a configurable number of HTTP requests to the ALB DNS endpoint to generate visible traffic metrics in CloudWatch. Used to populate the RequestCount graph on the CloudWatch dashboard and demonstrate the ALB distributing requests across both Availability Zones.
-
-**Where to run:** Local machine terminal, AWS CloudShell, or any host outside the VPC. Running from outside the VPC ensures traffic follows the real path — internet → ALB → EC2 — rather than an internal VPC shortcut.  
-**When to run:** After the ALB and target group are confirmed healthy, before or during CloudWatch dashboard review.
-
----
+## generate-traffic.sh — ALB Traffic Simulation
 
 ```bash
 #!/bin/bash
@@ -28,16 +21,3 @@ done
 echo ""
 echo "Done. Allow 5 minutes for metrics to appear in CloudWatch."
 ```
-
----
-
-## Notes
-
-**Why run from outside the VPC?**  
-Traffic originating from inside the VPC (e.g. from an SSM session on EC2) takes a different network path and may bypass the ALB entirely. Running from CloudShell or a local machine ensures the full request lifecycle is exercised — and that the metrics recorded in CloudWatch reflect real external traffic.
-
-**Why `> /dev/null`?**  
-Suppresses the HTML response output in the terminal. The request still completes fully and is counted by the ALB — the response is just discarded locally since we're only interested in the CloudWatch metrics, not the content.
-
-**What to observe in CloudWatch:**  
-After running, wait 5 minutes then check the `RequestCount` metric on `ha-app-load-balancer`. You should see a clear spike at the time the script ran. The `HealthyHostCount` metric should remain flat at 2 throughout, confirming both instances stayed healthy under load.
