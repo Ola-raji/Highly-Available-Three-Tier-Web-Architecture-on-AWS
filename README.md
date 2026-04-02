@@ -22,6 +22,46 @@ This project was built to develop and demonstrate practical understanding of cor
 
 ---
 
+## System Design Considerations
+
+**High Availability**
+Resources are distributed across two physically separate Availability Zones. The ALB, ASG, and RDS subnet group all span both AZs. No single component failure can take down the entire application — traffic reroutes automatically, instances self-replace via ASG, and the database has a standby path via Multi-AZ promotion. The minimum ASG capacity is set to 2 (not 1) to ensure at least one instance is always available in each AZ even during a scale-in event.
+
+**Scalability**
+The Auto Scaling Group responds to CPU demand without manual intervention. A target tracking policy maintains average fleet CPU at 50%, adding instances when demand rises and removing them during quiet periods. The ALB distributes load evenly across however many instances are running at any given time, so scaling in or out is completely transparent to users.
+
+**Fault Tolerance**
+Three failure classes were tested and validated against the architecture:
+- *Hardware failure:* EC2 termination → ASG detects count below minimum and replaces instance automatically
+- *Application failure:* Nginx process stopped → ALB detects unhealthy target within 20 seconds and reroutes traffic, even though the EC2 instance itself remains running
+- *Capacity event:* CPU stress → ASG scales out beyond desired count, adds instance, then scales back in after cooldown
+
+**Reliability**
+Automated backups are enabled on RDS. CloudWatch alarms monitor CPU utilisation, healthy host count, and database storage across all tiers, with SNS email notifications on breach. The architecture recovers from all three failure scenarios above without any manual intervention.
+
+**Security**
+Layered security group chaining enforces least privilege at the network level — each tier only trusts the tier directly above it. Private subnets isolate application and database tiers from direct internet exposure. SSM Session Manager eliminates the open SSH attack surface entirely, and IMDSv2 prevents credential leakage via SSRF.
+
+---
+
+## Deployment Summary
+
+All infrastructure was deployed manually via the AWS Management Console in us-east-1 (N. Virginia). The deployment followed this sequence:
+
+1. Custom VPC and subnet layout across two AZs
+2. Internet Gateway, NAT Gateway, and route table configuration
+3. Security groups with chained source rules across all three tiers
+4. IAM role for SSM Session Manager access
+5. EC2 instances with IMDSv2-compatible User Data bootstrap script
+6. Application Load Balancer with target group and health checks
+7. Auto Scaling Group with launch template and target tracking policy
+8. RDS MySQL instance in private DB subnet group
+9. CloudWatch dashboard, alarms, and SNS notification topic
+
+See the `/docs` folder for detailed notes on each phase, and `/architecture/DESIGN-DECISIONS.md` for the reasoning behind key configuration choices.
+
+---
+
 ## Architecture Diagram
 
 ![Architecture Diagram](architecture/ha-architecture-diagram.png)
@@ -64,63 +104,6 @@ Security is enforced through three layers of security group chaining: the ALB ac
 | Amazon SNS | Alarm notifications via email |
 | NAT Gateway | Outbound internet access for private subnet resources |
 | Internet Gateway | Inbound internet traffic entry point |
-
----
-
-## System Design Considerations
-
-**High Availability**
-Resources are distributed across two physically separate Availability Zones. The ALB, ASG, and RDS subnet group all span both AZs. No single component failure can take down the entire application — traffic reroutes automatically, instances self-replace via ASG, and the database has a standby path via Multi-AZ promotion. The minimum ASG capacity is set to 2 (not 1) to ensure at least one instance is always available in each AZ even during a scale-in event.
-
-**Scalability**
-The Auto Scaling Group responds to CPU demand without manual intervention. A target tracking policy maintains average fleet CPU at 50%, adding instances when demand rises and removing them during quiet periods. The ALB distributes load evenly across however many instances are running at any given time, so scaling in or out is completely transparent to users.
-
-**Fault Tolerance**
-Three failure classes were tested and validated against the architecture:
-- *Hardware failure:* EC2 termination → ASG detects count below minimum and replaces instance automatically
-- *Application failure:* Nginx process stopped → ALB detects unhealthy target within 20 seconds and reroutes traffic, even though the EC2 instance itself remains running
-- *Capacity event:* CPU stress → ASG scales out beyond desired count, adds instance, then scales back in after cooldown
-
-**Reliability**
-Automated backups are enabled on RDS. CloudWatch alarms monitor CPU utilisation, healthy host count, and database storage across all tiers, with SNS email notifications on breach. The architecture recovers from all three failure scenarios above without any manual intervention.
-
-**Security**
-Layered security group chaining enforces least privilege at the network level — each tier only trusts the tier directly above it. Private subnets isolate application and database tiers from direct internet exposure. SSM Session Manager eliminates the open SSH attack surface entirely, and IMDSv2 prevents credential leakage via SSRF.
-
----
-
-## Deployment Summary
-
-All infrastructure was deployed manually via the AWS Management Console in us-east-1 (N. Virginia). The deployment followed this sequence:
-
-1. Custom VPC and subnet layout across two AZs
-2. Internet Gateway, NAT Gateway, and route table configuration
-3. Security groups with chained source rules across all three tiers
-4. IAM role for SSM Session Manager access
-5. EC2 instances with IMDSv2-compatible User Data bootstrap script
-6. Application Load Balancer with target group and health checks
-7. Auto Scaling Group with launch template and target tracking policy
-8. RDS MySQL instance in private DB subnet group
-9. CloudWatch dashboard, alarms, and SNS notification topic
-
-See the `/docs` folder for detailed notes on each phase, and `/architecture/DESIGN-DECISIONS.md` for the reasoning behind key configuration choices.
-
-> **Note:** No Infrastructure-as-Code tooling was used in this iteration. A CloudFormation or Terraform version is planned as a future improvement. 
-
----
-
-## Validation and Testing
-
-Three intentional failure tests were conducted to validate HA behaviour. Full results are documented in `/validation/TEST-RESULTS.md`.
-
-**Test 1 — EC2 Instance Termination**
-One ASG-managed instance was terminated via the console. The ALB detected the failure within 20 seconds and rerouted all traffic to the surviving instance. The ASG automatically launched a replacement, which passed health checks and rejoined the target group within approximately 4 minutes. No manual intervention was required at any point.
-
-**Test 2 — Application-Layer Health Check Failure**
-Nginx was stopped on a running instance via SSM Session Manager. The ALB detected the unhealthy response within 20 seconds and removed the instance from rotation while the EC2 instance itself remained running. The CloudWatch alarm fired and an SNS email notification was received. Nginx was restarted and the instance recovered to healthy within 20 seconds.
-
-**Test 3 — CPU Stress and Auto Scaling**
-The `stress` tool was run simultaneously on both instances to push fleet average CPU above the 50% target. The ASG launched a third instance after two consecutive 5-minute periods above threshold. After the stress period ended, the ASG scaled back in to the desired count of 2 during the cooldown window.
 
 ---
 
