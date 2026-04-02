@@ -62,7 +62,7 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 ## AWS Services Used
 
-| Service | Role in Architecture |
+|Service|Role in Architecture|
 |---|---|
 | Amazon VPC | Custom network with public/private subnet segmentation |
 | EC2 | Application servers running Nginx (Amazon Linux 2023, t3.micro) |
