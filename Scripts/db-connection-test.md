@@ -1,11 +1,4 @@
-# db-connection-test.sh — RDS Connectivity Verification
-
-Verifies that an EC2 instance can reach the RDS database through the security group chain. Connects to the RDS endpoint using the MySQL client and runs a set of basic SQL commands to confirm the database is reachable, the schema exists, and read/write operations work correctly.
-
-**Where to run:** On any ASG-managed EC2 instance via SSM Session Manager, as root.  
-**When to run:** After the RDS instance status shows Available and the `ha-rds-sg` security group is confirmed to allow port 3306 from `ha-ec2-sg`.
-
----
+## db-connection-test.sh — RDS Connectivity Verification
 
 ```bash
 #!/bin/bash
@@ -59,19 +52,3 @@ SELECT * FROM servers;
 -- Exit
 EXIT;
 ```
-
----
-
-## Notes
-
-**Why `mariadb105` instead of `mysql`?**  
-Amazon Linux 2023 removed the `mysql` package from its default repositories. `mariadb105` is a fully compatible drop-in replacement for the MySQL client — the connection syntax, commands, and SQL dialect are identical. The server running on RDS is still MySQL 8.0; only the client tool changes.
-
-**Why is the password not in the script?**  
-Hardcoding credentials in a script is a security risk, particularly in a version-controlled repository. The `-p` flag without a value causes MySQL to prompt for the password interactively — nothing is stored in shell history or visible on screen while typing.
-
-**What a successful connection confirms:**  
-The security group chain is working correctly — `ha-rds-sg` is accepting port 3306 connections from `ha-ec2-sg`. The RDS instance is reachable from within the private subnet. The database schema `haprojectdb` was created at launch. The full three-tier architecture is end-to-end functional.
-
-**If the connection fails:**  
-The most common cause is an incorrect security group source. Verify that `ha-rds-sg` inbound rule references `ha-ec2-sg` as the source (not a CIDR range), and that the RDS instance is in Available state rather than still Creating or Modifying.
