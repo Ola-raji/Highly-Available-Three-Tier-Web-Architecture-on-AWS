@@ -1,11 +1,4 @@
-# user-data.sh — EC2 Bootstrap Script
-
-Runs automatically as root on first boot via EC2 User Data. Installs Nginx, fetches instance metadata using IMDSv2, and writes a custom HTML page showing the instance's Availability Zone and ID. This makes ALB traffic distribution visually observable in the browser.
-
-**When it runs:** At EC2 launch — automatically, once, as root.  
-**Where it's used:** Pasted into the User Data field under Advanced Details when launching EC2 instances, and stored in the Launch Template for ASG-managed instances.
-
----
+## user-data.sh — EC2 Bootstrap Script
 
 ```bash
 #!/bin/bash
@@ -43,16 +36,3 @@ cat > /usr/share/nginx/html/index.html <<EOF
 </html>
 EOF
 ```
-
----
-
-## Notes
-
-**Why IMDSv2?**  
-Amazon Linux 2023 enforces IMDSv2 by default. The original IMDSv1 curl calls (`curl http://169.254.169.254/...`) fail silently — returning an empty string with no error. The fix is to first request a session token, then pass that token as a header on every subsequent metadata call. IMDSv2 is a security improvement that prevents SSRF attacks from leaking instance credentials via the metadata endpoint.
-
-**Why no `sudo`?**  
-User Data scripts run as root at launch — `sudo` is not needed. The same commands run manually in an SSM Session Manager terminal require `sudo su -` first, because SSM drops you in as the unprivileged `ssm-user`.
-
-**Why `systemctl enable nginx`?**  
-`start` launches Nginx now. `enable` ensures it starts automatically if the instance reboots. Both are needed for a production-ready setup.
