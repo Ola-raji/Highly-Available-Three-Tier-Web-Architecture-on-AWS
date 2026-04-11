@@ -1,4 +1,4 @@
-# Architecture Overview
+# Architecture Overview 🏗️
 
 A highly available three-tier web application deployed across two Availability Zones (**us-east-1a** and **us-east-1b**) inside a custom VPC (`10.0.0.0/16`). Each tier is isolated in its own subnet layer with access controlled entirely through security group chaining.
 
