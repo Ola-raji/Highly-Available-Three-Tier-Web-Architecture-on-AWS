@@ -1,4 +1,4 @@
-# Highly Available Three-Tier Web Architecture on AWS
+# Highly Available Three-Tier Web Architecture on AWS 
 
 ![Cloud](https://img.shields.io/badge/Cloud-AWS-orange)
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
