@@ -84,7 +84,7 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 ---
 
 ### Architecture Diagram
-[Architecture Diagram](Architecture/Architecture.md)
+[Architecture Diagram](https://github.com/Ola-raji/Highly-Available-Three-Tier-Web-Architecture-on-AWS/blob/main/Architecture/Architecture%20Diagram.png)
 
 ---
 ### Project Limitations
