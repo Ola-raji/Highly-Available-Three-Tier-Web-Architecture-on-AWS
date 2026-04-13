@@ -22,6 +22,11 @@ This project was built to develop and demonstrate practical understanding of cor
 
 ---
 
+### Architecture Diagram
+[Architecture Diagram](https://github.com/Ola-raji/Highly-Available-Three-Tier-Web-Architecture-on-AWS/blob/main/Architecture/Architecture%20Diagram.png)
+
+---
+
 ### System Design Considerations
 
 **High Availability**
@@ -80,11 +85,6 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 ### Live Access
 [Load Balancer Preview](http://ha-app-load-balancer-121171499.us-east-1.elb.amazonaws.com)
-
----
-
-### Architecture Diagram
-[Architecture Diagram](https://github.com/Ola-raji/Highly-Available-Three-Tier-Web-Architecture-on-AWS/blob/main/Architecture/Architecture%20Diagram.png)
 
 ---
 ### Project Limitations
