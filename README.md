@@ -88,9 +88,9 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 ---
 ### Project Limitations
-- This project was built within AWS Free Tier constraints and is scoped for a lab environment rather than a production deployment. As a result, a number of deliberate trade-offs were made. 
+- This project was built within AWS Free Tier constraints and is scoped for a lab environment rather than a production deployment. As a result, a number of deliberate trade-offs had to be made. 
 
-- Only one NAT Gateway is deployed in us-east-1a, a production setup would add a second in us-east-1b to eliminate the single point of failure for private subnet egress. 
+- Only one NAT Gateway is deployed in us-east-1a as a result of resource constraints, a production setup would add a second in us-east-1b to eliminate the single point of failure for private subnet egress. 
 
 - RDS runs in Single-AZ mode with 1-day backup retention; Multi-AZ is disabled to stay within free tier, though the DB subnet group already spans both AZs and can be upgraded with a single configuration change.
 
