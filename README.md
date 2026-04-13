@@ -23,7 +23,7 @@ This project was built to develop and demonstrate practical understanding of cor
 ---
 
 ### Architecture Diagram
-[Architecture Diagram](https://github.com/Ola-raji/Highly-Available-Three-Tier-Web-Architecture-on-AWS/blob/main/Architecture/Architecture%20Diagram.png)
+<img alt="HA Three-Tier AWS Architecture" src="https://github.com/user-attachments/assets/45e115e7-beff-4f0d-9814-84b6ff25d94b" width="500" />
 
 ---
 
