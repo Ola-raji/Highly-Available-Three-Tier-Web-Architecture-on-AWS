@@ -4,7 +4,7 @@
 ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
 ![Architecture](https://img.shields.io/badge/Architecture-Three--Tier%20HA-blue)
 
-A hands-on cloud infrastructure project demonstrating a production-grade, highly available, reliable, scalable and fault-tolerant three-tier architecture on AWS, built from scratch using the AWS Management Console across two Availability Zones in us-east-1.
+A hands-on cloud infrastructure project demonstrating a production-grade, highly available, secure, scalable and fault-tolerant three-tier architecture on AWS, built from scratch using the AWS Management Console across two Availability Zones in us-east-1.
 
 This project demonstrates practical in-depth understanding of AWS services, network design, security layering, and failure recovery patterns. Every component was manually configured to reinforce how each piece fits together, and then intentionally broken to prove the high availability actually works.
 
