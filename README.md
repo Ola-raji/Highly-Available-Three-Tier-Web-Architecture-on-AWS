@@ -83,8 +83,11 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 ---
 
-### Live Access
-[Load Balancer Preview](http://ha-app-load-balancer-121171499.us-east-1.elb.amazonaws.com)
+### Load Balancer Preview
+
+
+https://github.com/user-attachments/assets/ca4dfc92-3175-40e6-ac9f-a3dd26619f30
+
 
 ---
 ### Project Limitations
