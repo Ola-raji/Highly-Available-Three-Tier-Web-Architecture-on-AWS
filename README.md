@@ -68,7 +68,7 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 
 ---
 
-### AWS Services Used
+### Tools and Services Stack
 
 |Service|Role in Architecture|
 |---|---|
@@ -83,6 +83,7 @@ All infrastructure was deployed manually via the AWS Management Console in us-ea
 | Amazon SNS | Alarm notifications via email |
 | NAT Gateway | Outbound internet access for private subnet resources |
 | Internet Gateway | Inbound internet traffic entry point |
+| Bash Script | Nginx installation and Configuration |
 
 ---
 
