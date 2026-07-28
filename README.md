@@ -23,7 +23,10 @@ This project demonstrates practical in-depth understanding of AWS services, netw
 ---
 
 ### Architecture Diagram
-<img alt="HA Three-Tier AWS Architecture" src="https://github.com/user-attachments/assets/45e115e7-beff-4f0d-9814-84b6ff25d94b" width="510" />
+
+<img width="710" height="505" alt="ha project Architecture diagram" src="https://github.com/user-attachments/assets/5de48edb-1ee4-4934-b0e6-ea498d5f0ad6" />
+
+
 
 ---
 
