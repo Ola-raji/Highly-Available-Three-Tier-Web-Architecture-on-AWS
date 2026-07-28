@@ -24,7 +24,7 @@ This project demonstrates practical in-depth understanding of AWS services, netw
 
 ### Architecture Diagram
 
-<img width="710" height="505" alt="ha project Architecture diagram" src="https://github.com/user-attachments/assets/5de48edb-1ee4-4934-b0e6-ea498d5f0ad6" />
+<img width="810" height="560" alt="ha project Architecture diagram" src="https://github.com/user-attachments/assets/5de48edb-1ee4-4934-b0e6-ea498d5f0ad6" />
 
 
 
